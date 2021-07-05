@@ -3,6 +3,8 @@ server {
     listen 80 default_server;
     listen [::]:80 default_server;
 
+    ssi on;
+
     root /var/www/localhost/html;
 
     index index.html index.htm;
