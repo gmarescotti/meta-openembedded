@@ -80,6 +80,7 @@ do_configure () {
     --prefix=${prefix} \
     --with-threads \
     --with-http_gzip_static_module \
+    --add-module=/home/user/dunfell/nginx-push-stream-module \
     ${EXTRA_OECONF} ${PACKAGECONFIG_CONFARGS}
 }
 
