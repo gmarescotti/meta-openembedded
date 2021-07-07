@@ -5,7 +5,8 @@ server {
 
     ssi on;
 
-    root /var/www/localhost/html;
+    # root /var/www/localhost/html;
+    root /usr/share/nginx/html;
 
     index index.html index.htm;
 
