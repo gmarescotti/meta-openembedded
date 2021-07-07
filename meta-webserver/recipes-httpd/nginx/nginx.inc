@@ -81,6 +81,8 @@ do_configure () {
     --with-threads \
     --with-http_gzip_static_module \
     --add-module=/home/user/dunfell/nginx-push-stream-module \
+    --add-module=/home/user/dunfell/ngx_devel_kit \
+    --add-module=/home/user/dunfell/form-input-nginx-module \
     ${EXTRA_OECONF} ${PACKAGECONFIG_CONFARGS}
 }
 
