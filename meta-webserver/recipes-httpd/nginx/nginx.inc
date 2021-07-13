@@ -83,6 +83,8 @@ do_configure () {
     --add-module=/home/user/dunfell/nginx-push-stream-module \
     --add-module=/home/user/dunfell/ngx_devel_kit \
     --add-module=/home/user/dunfell/form-input-nginx-module \
+    --add-module=/home/user/dunfell/echo-nginx-module \
+    --add-module=/home/user/dunfell/array-var-nginx-module \
     ${EXTRA_OECONF} ${PACKAGECONFIG_CONFARGS}
 }
 
