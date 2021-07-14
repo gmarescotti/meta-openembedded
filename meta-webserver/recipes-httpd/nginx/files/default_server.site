@@ -1,3 +1,5 @@
+# da copiare in /etc/nginx/sites-enabled/default_server 
+
 # Default server configuration
 server {
     listen 80 default_server;
@@ -5,7 +7,6 @@ server {
 
     ssi on;
 
-    # root /var/www/localhost/html;
     root /usr/share/nginx/html;
 
     index index.html index.htm;
@@ -14,4 +15,69 @@ server {
 
     # redirect server error pages to the static page /50x.html
     error_page 500 502 503 504 /50x.html;
+
+    location / {
+   	# echo CBT=$client_body_timeout;
+   	# set $ipaddress 6.7.8.9;
+        include /etc/nginx/reverse_fastcgi_params;
+    }
+
+    location /echo {
+        default_type text/plain;
+        echo "hello world!";
+        echo IA=$ipaddress GW=$gateway DHCP=$dhcp NM=$netmask;
+	echo XXX=$QUERY_STRING;
+   	# echo CBT=$client_body_timeout;
+    }
+
+    location /post {
+        default_type text/plain;
+	set_form_input $ipaddress;
+	set_form_input $dhcp;
+	set_form_input $gateway;
+	set_form_input $netmask;
+        echo "hello world!";
+        echo IA=$ipaddress GW=$gateway DHCP=$dhcp NM=$netmask;
+    }
+
+    location /cgi-bin/ {
+        gzip off;
+        root /usr/share/nginx/html;
+
+	set_form_input $internetenabled;
+	set_form_input $ssid;
+	set_form_input $pass;
+	set_form_input $dhcp;
+	set_form_input $ipaddress;
+	set_form_input $netmask;
+	set_form_input $gateway;
+	set_form_input $dns;
+
+        fastcgi_pass  unix:/tmp/fcgiwrap.socket;
+        include /etc/nginx/fastcgi_params;
+        include /etc/nginx/fastcgi_params_dkc;
+        fastcgi_param SCRIPT_FILENAME  /usr/lib$fastcgi_script_name;
+    }
+
+    location /pub {
+        # activate publisher (admin) mode for this location
+        push_stream_publisher admin;
+
+        # query string based channel id
+        push_stream_channels_path               $arg_id;
+    }
+
+    location ~ /ev/(.*) {
+        # activate event source mode for this location
+        push_stream_subscriber eventsource;
+
+        # positional channel path
+        push_stream_channels_path                   $1;
+        # message template
+        push_stream_message_template                "{\"id\":~id~,\"channel\":\"~channel~\",\"text\":\"~text~\"}";
+
+        # ping frequency
+        push_stream_ping_message_interval           10s;
+    }
 }
+
