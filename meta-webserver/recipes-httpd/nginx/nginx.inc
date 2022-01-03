@@ -22,6 +22,11 @@ SRC_URI = " \
     file://nginx-volatile.conf \
     file://nginx.service \
     file://nginx-fix-pidfile.patch \
+    file://fastcgi_params_dkc \
+    file://reverse_fastcgi_params \
+    file://issue_command.py \
+    file://reset_factory_default.sh \
+    file://store_wifi_parameters.sh \
 "
 
 inherit siteinfo update-rc.d useradd systemd
@@ -121,6 +126,22 @@ do_install () {
 
     install -m 0644 ${WORKDIR}/proxy_params ${D}${sysconfdir}/nginx/proxy_params
 
+    #
+    # Aggiunti da Peppo 20211112
+    #
+    install -m 0644 ${WORKDIR}/fastcgi_params_dkc ${D}${sysconfdir}/nginx/fastcgi_params_dkc
+    install -m 0644 ${WORKDIR}/reverse_fastcgi_params ${D}${sysconfdir}/nginx/reverse_fastcgi_params
+
+    #
+    # Aggiunti da Peppo 20211223
+    #
+    install -d ${D}${NGINX_WWWDIR}/html/cgi-bin
+    install -D -m 0744 --target-directory=${D}${NGINX_WWWDIR}/html/cgi-bin ${WORKDIR}/issue_command.py
+    install -D -m 0744 --target-directory=${D}${NGINX_WWWDIR}/html/cgi-bin ${WORKDIR}/reset_factory_default.sh
+    install -D -m 0744 --target-directory=${D}${NGINX_WWWDIR}/html/cgi-bin ${WORKDIR}/store_wifi_parameters.sh
+    # Cambio i proprietari dei file. E' gia' stato fatto prima, ma questi file non c'erano ancora.
+    chown ${NGINX_USER}:www-data -R ${D}${NGINX_WWWDIR}
+
     install -d ${D}${sysconfdir}/default/volatiles
     install -m 0644 ${WORKDIR}/nginx-volatile.conf ${D}${sysconfdir}/default/volatiles/99_nginx
     sed -i 's,/var/,${localstatedir}/,g' ${D}${sysconfdir}/default/volatiles/99_nginx
@@ -134,6 +155,7 @@ do_install () {
     install -d ${D}${sysconfdir}/nginx/modules-enabled
     install -d ${D}${sysconfdir}/nginx/server-conf.d
     install -d ${D}${sysconfdir}/nginx/conf.d
+
 
     if ${@bb.utils.contains('DISTRO_FEATURES','systemd','true','false',d)};then
         install -d ${D}${systemd_unitdir}/system
@@ -161,6 +183,7 @@ pkg_postinst_${PN} () {
 FILES_${PN} += " \
     ${localstatedir}/ \
     ${systemd_unitdir}/system/nginx.service \
+    /var/www/localhost/* \
 "
 
 CONFFILES_${PN} = " \

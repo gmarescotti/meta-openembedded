@@ -16,6 +16,17 @@ server {
     # redirect server error pages to the static page /50x.html
     error_page 500 502 503 504 /50x.html;
 
+   location ~ \.php$ {
+	include		fastcgi_params;
+	root		html;
+	fastcgi_pass	127.0.0.1:9000;
+	fastcgi_index	index.php;
+	fastcgi_param	SCRIPT_FILENAME	/usr/share/nginx/html$fastcgi_script_name;
+	fastcgi_param	SCRIPT_NAME	$fastcgi_script_name;
+    }
+
+
+
     location / {
    	# echo CBT=$client_body_timeout;
    	# set $ipaddress 6.7.8.9;

@@ -1,0 +1,8 @@
+fastcgi_param  INTERNETENABLED	  $internetenabled;
+fastcgi_param  SSID		  $ssid;
+fastcgi_param  PASS		  $pass;
+fastcgi_param  DHCP		  $dhcp;
+fastcgi_param  IPADDRESS	  $ipaddress;
+fastcgi_param  NETMASK		  $netmask;
+fastcgi_param  GATEWAY		  $gateway;
+fastcgi_param  DNS		  $dns;
