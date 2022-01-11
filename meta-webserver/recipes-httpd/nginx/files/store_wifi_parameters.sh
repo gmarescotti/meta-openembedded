@@ -135,6 +135,17 @@ iface usb0 inet static
 iface bnep0 inet dhcp
 
 EOT
+
+    cat <<EOT >> $filename
+# CAN0 INTERFACE at 500Kbs
+auto can0
+  iface can0 inet manual
+  pre-up /sbin/ip link set can0 type can bitrate 500000
+  up /sbin/ifconfig can0 up
+  down /sbin/ifconfig can0 down
+
+EOT
+
 }
 
 update_interfaces "/etc/network/interfaces"
