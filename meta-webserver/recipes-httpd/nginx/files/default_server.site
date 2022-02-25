@@ -53,7 +53,7 @@ server {
 
     location /cgi-bin/ {
         gzip off;
-        root /usr/share/nginx/html;
+        root /var/www/localhost/html;
 
 	set_form_input $internetenabled;
 	set_form_input $ssid;
