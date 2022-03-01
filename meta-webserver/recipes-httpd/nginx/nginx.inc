@@ -133,8 +133,6 @@ do_install () {
     # Aggiunti da Peppo 20211223
     #
     install -d ${D}${NGINX_WWWDIR}/html/cgi-bin
-    install -D -m 0744 --target-directory=${D}${NGINX_WWWDIR}/html/cgi-bin ${WORKDIR}/reset_factory_default.sh
-    install -D -m 0744 --target-directory=${D}${NGINX_WWWDIR}/html/cgi-bin ${WORKDIR}/store_wifi_parameters.sh
     # Cambio i proprietari dei file. E' gia' stato fatto prima, ma questi file non c'erano ancora.
     chown ${NGINX_USER}:www-data -R ${D}${NGINX_WWWDIR}
 

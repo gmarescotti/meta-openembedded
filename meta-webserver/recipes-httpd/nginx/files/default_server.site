@@ -16,16 +16,27 @@ server {
     # redirect server error pages to the static page /50x.html
     error_page 500 502 503 504 /50x.html;
 
-   location ~ \.php$ {
+    location ~ \.php$ {
+        gzip off;
+
+	set_form_input $internetenabled;
+	set_form_input $ssid;
+	set_form_input $pass;
+	set_form_input $dhcp;
+	set_form_input $ipaddress;
+	set_form_input $netmask;
+	set_form_input $gateway;
+	set_form_input $dns;
+
 	include		fastcgi_params;
-	root		html;
+        include         fastcgi_params_dkc;
+        include         reverse_fastcgi_params;
+
 	fastcgi_pass	127.0.0.1:9000;
 	fastcgi_index	index.php;
-	fastcgi_param	SCRIPT_FILENAME	/usr/share/nginx/html$fastcgi_script_name;
+	fastcgi_param	SCRIPT_FILENAME	$document_root$fastcgi_script_name;
 	fastcgi_param	SCRIPT_NAME	$fastcgi_script_name;
     }
-
-
 
     location / {
    	# echo CBT=$client_body_timeout;
@@ -49,25 +60,6 @@ server {
 	set_form_input $netmask;
         echo "hello world!";
         echo IA=$ipaddress GW=$gateway DHCP=$dhcp NM=$netmask;
-    }
-
-    location /cgi-bin/ {
-        gzip off;
-        root /var/www/localhost/html;
-
-	set_form_input $internetenabled;
-	set_form_input $ssid;
-	set_form_input $pass;
-	set_form_input $dhcp;
-	set_form_input $ipaddress;
-	set_form_input $netmask;
-	set_form_input $gateway;
-	set_form_input $dns;
-
-        fastcgi_pass  unix:/tmp/fcgiwrap.socket;
-        include /etc/nginx/fastcgi_params;
-        include /etc/nginx/fastcgi_params_dkc;
-        fastcgi_param SCRIPT_FILENAME  /usr/lib$fastcgi_script_name;
     }
 
     location /pub {
