@@ -24,8 +24,6 @@ SRC_URI = " \
     file://nginx-fix-pidfile.patch \
     file://fastcgi_params_dkc \
     file://reverse_fastcgi_params \
-    file://reset_factory_default.sh \
-    file://store_wifi_parameters.sh \
 "
 
 inherit siteinfo update-rc.d useradd systemd
