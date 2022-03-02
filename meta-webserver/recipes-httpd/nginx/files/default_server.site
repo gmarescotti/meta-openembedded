@@ -31,6 +31,7 @@ server {
 	include		fastcgi_params;
         include         fastcgi_params_dkc;
         include         reverse_fastcgi_params;
+        include         info_params_dkc;
 
 	fastcgi_pass	127.0.0.1:9000;
 	fastcgi_index	index.php;
