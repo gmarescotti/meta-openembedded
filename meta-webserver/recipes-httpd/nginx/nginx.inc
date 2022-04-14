@@ -24,6 +24,7 @@ SRC_URI = " \
     file://nginx-fix-pidfile.patch \
     file://fastcgi_params_dkc \
     file://reverse_fastcgi_params \
+    file://info_params_dkc \
 "
 
 inherit siteinfo update-rc.d useradd systemd
@@ -128,6 +129,7 @@ do_install () {
     #
     install -m 0644 ${WORKDIR}/fastcgi_params_dkc ${D}${sysconfdir}/nginx/fastcgi_params_dkc
     install -m 0644 ${WORKDIR}/reverse_fastcgi_params ${D}${sysconfdir}/nginx/reverse_fastcgi_params
+    install -m 0644 ${WORKDIR}/info_params_dkc ${D}${sysconfdir}/nginx/info_params_dkc
 
     #
     # Aggiunti da Peppo 20211223
